@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>🔴 NFC Sound Player</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: system-ui, sans-serif;
+            padding: 20px;
+        }
+        .container { text-align: center; }
+        .big-button {
+            width: 260px;
+            height: 260px;
+            background: radial-gradient(circle at 30% 30%, #ff4444, #cc0000);
+            border-radius: 50%;
+            box-shadow: 0 20px 40px rgba(255,0,0,0.4);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 30px;
+            transition: 0.07s;
+        }
+        .big-button:active { transform: scale(0.93); }
+        .button-text { color: white; font-size: 36px; font-weight: bold; }
+        .sound-name { color: white; background: rgba(0,0,0,0.5); padding: 12px 24px; border-radius: 50px; }
+        audio { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="big-button" id="playButton">
+            <div class="button-text">🔴<br>НАЖМИ</div>
+        </div>
+        <div class="sound-name" id="soundName">Загрузка...</div>
+    </div>
+    <audio id="audioPlayer" preload="auto"></audio>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const soundUrl = urlParams.get('url');
+        
+        if (!soundUrl) {
+            document.getElementById('soundName').innerHTML = '❌ Нет звука';
+            document.getElementById('playButton').style.opacity = '0.5';
+        } else {
+            const audio = document.getElementById('audioPlayer');
+            audio.src = decodeURIComponent(soundUrl);
+            audio.load();
+            document.getElementById('soundName').innerHTML = '🎵 Нажми на красную кнопку';
+            document.getElementById('playButton').onclick = () => {
+                audio.currentTime = 0;
+                audio.play();
+            };
+        }
+    </script>
+</body>
+</html>
